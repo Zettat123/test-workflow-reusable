@@ -1,0 +1,24 @@
+name: Check
+
+on:
+  workflow_call:
+
+jobs:
+  check-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo check-frontend
+  check-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo check-backend
+  check-db:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo check-db
+  check-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo check-docs
+  inner-check:
+    uses: ./.github/workflows/inner-check.yaml

@@ -1,0 +1,18 @@
+name: Check
+
+on:
+  workflow_call:
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo prepare
+    
+  do-inner-check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        db_type: [sqlite, mysql, postgresql, mssql]
+    steps:
+      - run: echo ${{ matrix.db_type }}

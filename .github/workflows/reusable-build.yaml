@@ -1,0 +1,45 @@
+name: Reusable Build
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: Target environment
+        type: string
+        required: true
+      runner:
+        description: Runner to use
+        type: string
+        default: ubuntu-latest
+    outputs:
+      artifact-name:
+        description: Name of the produced artifact
+        value: ${{ jobs.build.outputs.artifact-name }}
+
+jobs:
+  check:
+    uses: ./.github/workflows/check.yaml
+
+  build:
+    runs-on: ${{ inputs.runner }}
+    outputs:
+      artifact-name: ${{ steps.set-output.outputs.artifact-name }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          echo "Building for environment: ${{ inputs.environment }}"
+      - name: Set output
+        id: set-output
+        run: |
+          echo "artifact-name=build-${{ inputs.environment }}-${{ github.sha }}" >> "$GITHUB_OUTPUT"
+
+  push-image:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo push-image
+
+  push-binary:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo push-binary
